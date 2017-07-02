@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+
+<select id="isCheckBlocked" parameterType="String" resultType="String">
+	<![CDATA[
+			SELECT * 						/* isCheckBlocked */
+			  FROM tb_block
+			 WHERE block_pn = #{mem_pn}
+		]]>
+</select>
+
+<select id="isCheckID" parameterType="String" resultType="String">
+	<![CDATA[
+			SELECT * 						/* isCheckID */
+			  FROM tb_member
+			 WHERE mem_pn = #{mem_pn}
+		]]>
+</select>
+
+<select id="autoSearchPhoneNb" parameterType="String" resultType="Hashmap">
+	<![CDATA[
+			SELECT DISTINCT mem_pn			/* autoSearchPhoneNb */
+			  FROM tb_member
+			 WHERE mem_pn LIKE CONCAT('%',#{phone},'%')
+		]]>
+</select>
+
+<select id="autoFillElements" parameterType="String" resultType="Hashmap">
+	<![CDATA[
+			SELECT *						/* autoFillElements */
+			  FROM tb_member
+			 WHERE mem_pn = #{id}
+		]]>
+</select>
+
+<insert id="joinMember" parameterType="com.ibm.renew.reservation.vo.MemberVO">
+	<![CDATA[
+			INSERT INTO   tb_member     	/* joinMember */
+						  (mem_nm
+						  ,mem_pn
+						  ,mem_em
+						  ,mem_site
+						  ,mem_reg_date)
+			      VALUES  (#{mem_nm}
+			      		  ,#{mem_pn}
+			      		  ,#{mem_em}
+			      		  ,#{mem_site}
+			      		  ,now()
+			      		  )
+		]]>
+</insert>
+
+<update id="updateMember" parameterType="String">
+	<![CDATA[
+			UPDATE  tb_member
+			   SET  mem_nm   =  #{mem_nm}		/* updateMember */
+			   	   ,mem_em   =  #{mem_em}
+			   	   ,mem_site = #{mem_site}
+			 WHERE  mem_pn   = #{mem_pn}
+	]]>
+</update>
+
+</mapper>

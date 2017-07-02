@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="conference">
+	<select id="fetchRoomByProject" parameterType="String" resultType="Hashmap">
+		<![CDATA[
+			SELECT * 
+			  FROM tb_conference 
+			 WHERE confrn_site = #{project}  
+			 ORDER BY confrn_order, confrn_nm
+		]]>
+	</select>
+		
+	<!-- <select id="fetchRoomByProject" parameterType="String" resultType="Hashmap">
+		<![CDATA[
+			SELECT * 
+			  FROM tb_reservation 
+			 WHERE rsv_site= #{project} and rsv_date= {date} 
+			 ORDER BY rsv_confer_nm, rsv_start_time
+		]]>
+	</select> -->
+	
+	
+	
+</mapper>

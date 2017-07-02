@@ -3,4 +3,95 @@
 
 <mapper namespace="reservation">
 
+	<select id="fetchScheduleByProjectDate" parameterType="Hashmap" resultType="Hashmap">
+		<![CDATA[
+			SELECT * 										/* fetchScheduleByProjectDate */
+			  FROM tb_reservation 
+			 WHERE rsv_site = #{project} and rsv_date = #{date} 
+			 ORDER BY rsv_confer_nm, rsv_start_time
+		]]>
+	</select>
+	
+	<select id="checkRsvTime" parameterType="com.ibm.renew.reservation.vo.RsvVO" resultType="String">
+			<![CDATA[
+			SELECT 	  rsv_start_time						/* checkRsvTime */
+			 		 ,rsv_end_time
+			 		 ,rsv_seq 
+			  FROM    tb_reservation 
+			 WHERE    rsv_site          = #{rsv_site} 
+			  		  and rsv_date      = #{rsv_date} 
+			  		  and rsv_confer_nm = #{rsv_confer_nm}
+		    ORDER BY  rsv_confer_nm, rsv_start_time
+		]]>
+	</select>
+		
+	<select id="fetchRsvInfo" parameterType="Integer" resultType="HashMap">
+			<![CDATA[
+			SELECT 	  *									/* fetchRsvInfo */
+			  FROM    tb_reservation 
+			 WHERE    rsv_seq = #{seq} 
+			  		  
+		]]>
+	</select>
+	
+	<insert id="doReservation" parameterType="com.ibm.renew.reservation.vo.RsvVO">
+			<![CDATA[
+					INSERT INTO tb_reservation(rsv_site		/* doReservation */
+											  ,rsv_confer_nm
+											  ,rsv_date
+											  ,rsv_start_time
+											  ,rsv_end_time
+											  ,rsv_title
+											  ,rsv_mem_nm
+											  ,rsv_mem_pn
+											  ,rsv_mem_em
+											  ,rsv_del_pw
+											  ,rsv_color
+											  ,rsv_reg_date)
+				         			   VALUES (#{rsv_site}
+				         			   		  ,#{rsv_confer_nm}
+				         			   		  ,#{rsv_date}
+				         			   		  ,#{rsv_start_time}
+				         			   		  ,#{rsv_end_time}
+				         			   		  ,#{rsv_title}
+				         			   		  ,#{rsv_mem_nm}
+				         			   		  ,#{rsv_mem_pn}
+				         			   		  ,#{rsv_mem_em}
+				         			   		  ,#{rsv_del_pw}
+				         			   		  ,#{rsv_color}
+				         			   		  ,now()
+				         			   		  )
+			]]>
+	</insert>
+	
+	<insert id="doRecordHistory" parameterType="com.ibm.renew.reservation.vo.HistoryVO">
+			<![CDATA[
+					INSERT INTO tb_history(hst_rsv_site		/* doRecordHistory */
+										  ,hst_rsv_confer_nm
+										  ,hst_rsv_date
+										  ,hst_rsv_start_time
+										  ,hst_rsv_end_time
+										  ,hst_rsv_title
+										  ,hst_rsv_mem_nm
+										  ,hst_rsv_mem_pn
+										  ,hst_rsv_mem_em
+										  ,hst_rsv_del_pw
+										  ,hst_reg_date
+										  ,hst_state)
+								   VALUES (#{hst_rsv_site}
+								   		  ,#{hst_rsv_confer_nm}
+								   		  ,#{hst_rsv_date}
+								   		  ,#{hst_rsv_start_time}
+								   		  ,#{hst_rsv_end_time}
+								   		  ,#{hst_rsv_title}
+								   		  ,#{hst_rsv_mem_nm}
+								   		  ,#{hst_rsv_mem_pn}
+								   		  ,#{hst_rsv_mem_em}
+								   		  ,#{hst_rsv_del_pw}
+								   		  ,now()
+								   		  ,#{hst_state}
+								   		  )
+			]]>
+	</insert>
+
 </mapper>
